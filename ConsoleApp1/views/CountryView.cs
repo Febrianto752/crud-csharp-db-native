@@ -45,7 +45,7 @@ namespace ConsoleApp1.views
             switch (pilihan)
             {
                 case 1:
-                    CreateRegion();
+                    CreateCountry();
                     break;
                 case 2:
                     SearchRegion();
@@ -68,14 +68,46 @@ namespace ConsoleApp1.views
 
         }
 
-        public static void CreateRegion()
+        public static void CreateCountry()
         {
             Console.Clear();
             Console.WriteLine("*** Create Country ***");
+            Console.Write("Country id (2 characters) : ");
+            string countryId = Console.ReadLine();
             Console.Write("Country Name : ");
-            string regionName = Console.ReadLine();
+            string countryName = Console.ReadLine();
 
-            int affectedRows = CountryModel.Create(regionName);
+            List<Region> regions = RegionModel.FindAllRegion();
+            Console.WriteLine("Pilihan region : ");
+            int i = 1;
+            foreach (Region region in regions)
+            {
+                Console.WriteLine($"{i}. {region.Name}");
+            }
+
+            Console.Write($"region (1 - {i}) : ");
+
+            int pilihanRegion = default;
+
+            try
+            {
+                pilihanRegion = int.Parse(Console.ReadLine());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid choice region input!!!");
+                Console.ReadKey();
+                CountryList();
+            }
+
+            if (pilihanRegion > i || pilihanRegion < 1)
+            {
+                Console.WriteLine("Pilihan tidak tersedia!!!");
+                Console.ReadKey();
+                CountryList();
+            }
+
+            int affectedRows = CountryModel.Create(countryId, countryName, regions[pilihanRegion].Id);
 
             if (affectedRows > 0)
             {

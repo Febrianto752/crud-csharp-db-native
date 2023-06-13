@@ -98,7 +98,7 @@ namespace ConsoleApp1.models
             return region;
         }
 
-        public static int Create(string name)
+        public static int Create(string id, string name, int regionId)
         {
             int result = 0;
             SqlConnection connection = DB.Connection();
@@ -109,17 +109,26 @@ namespace ConsoleApp1.models
             {
                 SqlCommand command = new SqlCommand();
                 command.Connection = connection;
-                command.CommandText = "INSERT INTO tb_m_regions VALUES ((@region_name))";
+                command.CommandText = "INSERT INTO tb_m_countries VALUES ((@country_name), (@region_id))";
                 command.Transaction = transaction;
 
                 // membuat parameter
-                SqlParameter pRegionName = new SqlParameter();
-                pRegionName.ParameterName = "@region_name";
-                pRegionName.Value = name;
-                pRegionName.SqlDbType = SqlDbType.VarChar;
+                SqlParameter pCountryName = new SqlParameter();
+                pCountryName.ParameterName = "@country_name";
+                pCountryName.Value = name;
+                pCountryName.SqlDbType = SqlDbType.VarChar;
 
                 // menambahkan parameter ke command
-                command.Parameters.Add(pRegionName);
+                command.Parameters.Add(pCountryName);
+
+                // membuat parameter
+                SqlParameter pRegionIdCountry = new SqlParameter();
+                pRegionIdCountry.ParameterName = "@country_name";
+                pRegionIdCountry.Value = regionId;
+                pRegionIdCountry.SqlDbType = SqlDbType.Int;
+
+                // menambahkan parameter ke command
+                command.Parameters.Add(pRegionIdCountry);
 
                 // Menalankan command
                 result = command.ExecuteNonQuery();
