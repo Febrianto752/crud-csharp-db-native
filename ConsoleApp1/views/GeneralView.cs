@@ -36,7 +36,7 @@
                     RegionView.RegionList();
                     break;
                 case 2:
-                    throw new Exception("not implemented");
+                    CountryView.CountryList();
                     break;
                 default:
                     Console.WriteLine("Invalid choice input!!!");

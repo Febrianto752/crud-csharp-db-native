@@ -2,32 +2,32 @@
 
 namespace ConsoleApp1.views
 {
-    class RegionView
+    class CountryView
     {
-        public static void RegionList()
+        public static void CountryList()
         {
             Console.Clear();
-            List<Region> regions = RegionModel.FindAllRegion();
+            List<Country> countries = CountryModel.FindAllCountry();
 
-            Console.WriteLine("*** Region List ***\n");
+            Console.WriteLine("*** Country List ***\n");
 
-            foreach (var region in regions)
+            foreach (var country in countries)
             {
                 Console.WriteLine("===========================");
-                Console.WriteLine("ID Region : {0}", region.Id);
-                Console.WriteLine("Region Name : {0}", region.Name);
+                Console.WriteLine("ID country : {0}", country.Id);
+                Console.WriteLine("Country Name : {0}", country.Name);
+                Console.WriteLine("Country Region : {0}", country.RegionName);
                 Console.WriteLine("===========================");
             }
 
             Console.WriteLine("\n\nMain menu : ");
-            Console.WriteLine("1. Create Region");
-            Console.WriteLine("2. Search Region");
-            Console.WriteLine("3. Edit Region");
-            Console.WriteLine("4. Delete Region");
+            Console.WriteLine("1. Create Country");
+            Console.WriteLine("2. Search Country");
+            Console.WriteLine("3. Edit Country");
+            Console.WriteLine("4. Delete Country");
             Console.WriteLine("5. Back");
             Console.WriteLine("*************");
             Console.Write("Pilihan : ");
-
 
             int pilihan = default;
 
@@ -39,7 +39,7 @@ namespace ConsoleApp1.views
             {
                 Console.WriteLine("Invalid choice input : ");
                 Console.ReadKey();
-                RegionList();
+                CountryList();
             }
 
             switch (pilihan)
@@ -62,7 +62,7 @@ namespace ConsoleApp1.views
                 default:
                     Console.WriteLine("Invalid choice input!!!");
                     Console.ReadKey();
-                    RegionList();
+                    CountryList();
                     break;
             }
 
@@ -71,23 +71,23 @@ namespace ConsoleApp1.views
         public static void CreateRegion()
         {
             Console.Clear();
-            Console.WriteLine("*** Create Region ***");
-            Console.Write("Region Name : ");
+            Console.WriteLine("*** Create Country ***");
+            Console.Write("Country Name : ");
             string regionName = Console.ReadLine();
 
-            int affectedRows = RegionModel.Create(regionName);
+            int affectedRows = CountryModel.Create(regionName);
 
             if (affectedRows > 0)
             {
                 Console.WriteLine("Successfull created region!!!");
                 Console.ReadKey();
-                RegionList();
+                CountryList();
             }
             else
             {
                 Console.WriteLine("Failed to created region!!!");
                 Console.ReadKey();
-                RegionList();
+                CountryList();
             }
         }
 
@@ -110,7 +110,7 @@ namespace ConsoleApp1.views
                 SearchRegion();
             }
 
-            Region region = RegionModel.FindOneRegion(regionId);
+            Region region = CountryModel.FindOneRegion(regionId);
 
             Console.Clear();
             Console.WriteLine("*** Region Detail ***");
@@ -144,19 +144,19 @@ namespace ConsoleApp1.views
             Console.Write("Region name : ");
             string regionName = Console.ReadLine();
 
-            int affectedRows = RegionModel.Update(regionId, regionName);
+            int affectedRows = CountryModel.Update(regionId, regionName);
 
             if (affectedRows > 0)
             {
                 Console.WriteLine("Successfull updated region!!!");
                 Console.ReadKey();
-                RegionList();
+                CountryList();
             }
             else
             {
                 Console.WriteLine("Failed to updated region!!!");
                 Console.ReadKey();
-                RegionList();
+                CountryList();
             }
         }
 
@@ -179,20 +179,22 @@ namespace ConsoleApp1.views
                 DeleteRegion();
             }
 
-            int affectedRows = RegionModel.Delete(regionId);
+            int affectedRows = CountryModel.Delete(regionId);
 
             if (affectedRows > 0)
             {
                 Console.WriteLine("Successfull deleted region!!!");
                 Console.ReadKey();
-                RegionList();
+                CountryList();
             }
             else
             {
                 Console.WriteLine("Failed to deleted region!!!");
                 Console.ReadKey();
-                RegionList();
+                CountryList();
             }
+
+
         }
     }
 }
