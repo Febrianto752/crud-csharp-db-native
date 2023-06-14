@@ -16,8 +16,8 @@ namespace ConsoleApp1.views
             foreach (var country in countries)
             {
                 Console.WriteLine("===========================");
-                Console.WriteLine("ID country : {0}", country.Id);
-                Console.WriteLine("Country Name : {0}", country.Name);
+                Console.WriteLine("ID country     : {0}", country.Id);
+                Console.WriteLine("Country Name   : {0}", country.Name);
                 Console.WriteLine("Country Region : {0}", country.RegionName);
                 Console.WriteLine("===========================");
             }

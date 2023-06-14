@@ -42,6 +42,9 @@
                 case 3:
                     LocationView.LocationList();
                     break;
+                case 6:
+                    JobView.JobList();
+                    break;
                 case 8:
                     Environment.Exit(0);
                     break;
