@@ -45,6 +45,9 @@
                 case 4:
                     DepartmentView.DepartmentList();
                     break;
+                case 5:
+                    EmployeeView.EmployeeList();
+                    break;
                 case 6:
                     JobView.JobList();
                     break;
