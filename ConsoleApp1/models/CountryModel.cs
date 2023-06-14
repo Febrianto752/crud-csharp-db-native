@@ -49,26 +49,26 @@ namespace ConsoleApp1.models
             return countries;
         }
 
-        public static Region FindOneRegion(int id)
+        public static Country FindCountry(string id)
         {
             SqlConnection connection = DB.Connection();
             connection.Open();
-            Region region = new Region();
+            Country country = new Country();
 
             try
             {
                 SqlCommand command = new SqlCommand();
                 command.Connection = connection;
-                command.CommandText = "SELECT * FROM tb_m_regions WHERE id = (@region_id)";
+                command.CommandText = "SELECT c.id, c.name AS country_name, r.name AS country_region FROM tb_m_countries c JOIN tb_m_regions r ON c.region_id = r.id  WHERE c.id = (@country_id)";
 
                 // membuat parameter
-                SqlParameter pRegionId = new SqlParameter();
-                pRegionId.ParameterName = "@region_id";
-                pRegionId.Value = id;
-                pRegionId.SqlDbType = SqlDbType.Int;
+                SqlParameter pCountryId = new SqlParameter();
+                pCountryId.ParameterName = "@country_id";
+                pCountryId.Value = id;
+                pCountryId.SqlDbType = SqlDbType.Char;
 
                 // menambahkan parameter ke command
-                command.Parameters.Add(pRegionId);
+                command.Parameters.Add(pCountryId);
 
                 // Menalankan command
                 using SqlDataReader reader = command.ExecuteReader();
@@ -77,13 +77,10 @@ namespace ConsoleApp1.models
                 {
                     if (reader.Read())
                     {
-                        region.Id = reader.GetInt32(0);
-                        region.Name = reader.GetString(1);
+                        country.Id = reader.GetString(0);
+                        country.Name = reader.GetString(1);
+                        country.RegionName = reader.GetString(2);
                     }
-                }
-                else
-                {
-                    Console.WriteLine("Data not found!");
                 }
 
                 reader.Close();
@@ -95,7 +92,7 @@ namespace ConsoleApp1.models
                 Console.WriteLine(ex.Message);
             }
             connection.Close();
-            return region;
+            return country;
         }
 
         public static int Create(string id, string name, int regionId)
@@ -109,8 +106,18 @@ namespace ConsoleApp1.models
             {
                 SqlCommand command = new SqlCommand();
                 command.Connection = connection;
-                command.CommandText = "INSERT INTO tb_m_countries VALUES ((@country_name), (@region_id))";
+                command.CommandText = "INSERT INTO tb_m_countries (id, name, region_id) VALUES ((@country_id) , (@country_name) , (@region_id))";
+                //command.CommandText = $"INSERT INTO tb_m_countries (id, name, region_id) VALUES ('{id}', '{name}', {regionId})";
                 command.Transaction = transaction;
+
+                // membuat parameter
+                SqlParameter pCountryId = new SqlParameter();
+                pCountryId.ParameterName = "@country_id";
+                pCountryId.Value = id;
+                pCountryId.SqlDbType = SqlDbType.VarChar;
+
+                // menambahkan parameter ke command
+                command.Parameters.Add(pCountryId);
 
                 // membuat parameter
                 SqlParameter pCountryName = new SqlParameter();
@@ -123,7 +130,7 @@ namespace ConsoleApp1.models
 
                 // membuat parameter
                 SqlParameter pRegionIdCountry = new SqlParameter();
-                pRegionIdCountry.ParameterName = "@country_name";
+                pRegionIdCountry.ParameterName = "@region_id";
                 pRegionIdCountry.Value = regionId;
                 pRegionIdCountry.SqlDbType = SqlDbType.Int;
 

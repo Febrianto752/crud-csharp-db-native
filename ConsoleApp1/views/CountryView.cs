@@ -1,4 +1,5 @@
 ﻿using ConsoleApp1.models;
+using ConsoleApp1.utils;
 
 namespace ConsoleApp1.views
 {
@@ -73,7 +74,7 @@ namespace ConsoleApp1.views
             Console.Clear();
             Console.WriteLine("*** Create Country ***");
             Console.Write("Country id (2 characters) : ");
-            string countryId = Console.ReadLine();
+            string countryId = Console.ReadLine().ToUpper();
             Console.Write("Country Name : ");
             string countryName = Console.ReadLine();
 
@@ -83,12 +84,14 @@ namespace ConsoleApp1.views
             foreach (Region region in regions)
             {
                 Console.WriteLine($"{i}. {region.Name}");
+                i++;
             }
 
-            Console.Write($"region (1 - {i}) : ");
+            Console.Write($"region (1 - {i - 1}) : ");
 
             int pilihanRegion = default;
 
+            // validation pilihan region input
             try
             {
                 pilihanRegion = int.Parse(Console.ReadLine());
@@ -100,27 +103,59 @@ namespace ConsoleApp1.views
                 CountryList();
             }
 
-            if (pilihanRegion > i || pilihanRegion < 1)
+            if (pilihanRegion > i - 1 || pilihanRegion < 1)
             {
                 Console.WriteLine("Pilihan tidak tersedia!!!");
                 Console.ReadKey();
                 CountryList();
             }
 
-            int affectedRows = CountryModel.Create(countryId, countryName, regions[pilihanRegion].Id);
+            // validation id country
+            bool validId = Validation.MustBeTwoChar(countryId);
 
-            if (affectedRows > 0)
+
+
+
+
+            if (validId)
             {
-                Console.WriteLine("Successfull created region!!!");
-                Console.ReadKey();
-                CountryList();
+                Country country = CountryModel.FindCountry(countryId);
+
+                if (country.Id is null)
+                {
+                    int affectedRows = CountryModel.Create(countryId, countryName, regions[pilihanRegion].Id);
+
+                    if (affectedRows > 0)
+                    {
+                        Console.WriteLine("Successfull created country!!!");
+                        Console.ReadKey();
+                        CountryList();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failed to created country!!!");
+                        Console.ReadKey();
+                        CountryList();
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("country id already exist!!!");
+                    Console.ReadKey();
+                    CountryList();
+                }
+
+
             }
             else
             {
-                Console.WriteLine("Failed to created region!!!");
+                Console.WriteLine("country id must be 2 characthers");
                 Console.ReadKey();
                 CountryList();
             }
+
+
+
         }
 
         public static void SearchRegion()
@@ -129,25 +164,14 @@ namespace ConsoleApp1.views
             Console.WriteLine("*** Search Region By Id ***");
             Console.Write("Enter region id : ");
 
-            int regionId = default;
+            string countryId = Console.ReadLine();
 
-            try
-            {
-                regionId = int.Parse(Console.ReadLine());
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("invalid region id input!!!");
-                Console.ReadKey();
-                SearchRegion();
-            }
-
-            Region region = CountryModel.FindOneRegion(regionId);
+            Country country = CountryModel.FindCountry(countryId);
 
             Console.Clear();
             Console.WriteLine("*** Region Detail ***");
-            Console.WriteLine("ID : {0}", region.Id);
-            Console.WriteLine("Region Name : {0}", region.Name);
+            Console.WriteLine("ID : {0}", country.Id);
+            Console.WriteLine("Region Name : {0}", country.Name);
             Console.ReadKey();
             GeneralView.HomePage();
         }
