@@ -49,13 +49,13 @@ namespace ConsoleApp1.views
                     CreateCountry();
                     break;
                 case 2:
-                    SearchRegion();
+                    SearchCountry();
                     break;
                 case 3:
-                    EditRegion();
+                    EditCountry();
                     break;
                 case 4:
-                    DeleteRegion();
+                    DeleteCountry();
                     break;
                 case 5:
                     GeneralView.HomePage();
@@ -154,102 +154,130 @@ namespace ConsoleApp1.views
                 CountryList();
             }
 
-
-
         }
 
-        public static void SearchRegion()
+        public static void SearchCountry()
         {
             Console.Clear();
             Console.WriteLine("*** Search Region By Id ***");
-            Console.Write("Enter region id : ");
+            Console.Write("Enter country id : ");
 
-            string countryId = Console.ReadLine();
+            string countryId = Console.ReadLine().ToUpper();
 
             Country country = CountryModel.FindCountry(countryId);
 
             Console.Clear();
             Console.WriteLine("*** Region Detail ***");
             Console.WriteLine("ID : {0}", country.Id);
-            Console.WriteLine("Region Name : {0}", country.Name);
+            Console.WriteLine("Country Name : {0}", country.Name);
+            Console.WriteLine("Region Name : {0}", country.RegionName);
             Console.ReadKey();
-            GeneralView.HomePage();
+            CountryList();
         }
 
-        public static void EditRegion()
+        public static void EditCountry()
         {
             Console.Clear();
-            Console.WriteLine("*** Edit Region ***");
-            Console.Write("Enter region id : ");
+            Console.WriteLine("*** Edit Country ***");
+            Console.Write("Enter country id : ");
 
-            int regionId = default;
+            string countryId = Console.ReadLine().ToUpper();
 
-            try
+            Country country = CountryModel.FindCountry(countryId);
+
+            if (country.Id is null)
             {
-                regionId = int.Parse(Console.ReadLine());
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("invalid region id input!!!");
+                Console.WriteLine("country not found!!!");
                 Console.ReadKey();
-                EditRegion();
+                CountryList();
             }
 
             Console.Clear();
-            Console.WriteLine("*** Edit Region ***");
-            Console.Write("Region name : ");
+            Console.WriteLine("*** Edit Country ***");
+            Console.Write("Country name : ");
             string regionName = Console.ReadLine();
 
-            int affectedRows = CountryModel.Update(regionId, regionName);
+            List<Region> regions = RegionModel.FindAllRegion();
+            Console.WriteLine("Pilihan region : ");
+            int i = 1;
+            foreach (Region region in regions)
+            {
+                Console.WriteLine($"{i}. {region.Name}");
+                i++;
+            }
+
+            Console.Write($"region (1 - {i - 1}) : ");
+
+            int pilihanRegion = default;
+
+            // validation pilihan region input
+            try
+            {
+                pilihanRegion = int.Parse(Console.ReadLine());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid choice region input!!!");
+                Console.ReadKey();
+                CountryList();
+            }
+
+            if (pilihanRegion > i - 1 || pilihanRegion < 1)
+            {
+                Console.WriteLine("Pilihan tidak tersedia!!!");
+                Console.ReadKey();
+                CountryList();
+            }
+
+            int affectedRows = CountryModel.Update(countryId, regionName, pilihanRegion);
 
             if (affectedRows > 0)
             {
-                Console.WriteLine("Successfull updated region!!!");
+                Console.WriteLine("Successfull updated country!!!");
                 Console.ReadKey();
                 CountryList();
             }
             else
             {
-                Console.WriteLine("Failed to updated region!!!");
+                Console.WriteLine("Failed to updated country!!!");
                 Console.ReadKey();
                 CountryList();
             }
         }
 
-        public static void DeleteRegion()
+        public static void DeleteCountry()
         {
             Console.Clear();
-            Console.WriteLine("*** Delete Region ***");
-            Console.Write("Enter region id : ");
+            Console.WriteLine("*** Delete Country ***");
+            Console.Write("Enter country id : ");
 
-            int regionId = default;
+            string countryId = Console.ReadLine().ToUpper();
 
-            try
+            Country country = CountryModel.FindCountry(countryId);
+
+            if (country.Id is not null)
             {
-                regionId = int.Parse(Console.ReadLine());
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("invalid region id input!!!");
-                Console.ReadKey();
-                DeleteRegion();
-            }
+                int affectedRows = CountryModel.Delete(countryId);
 
-            int affectedRows = CountryModel.Delete(regionId);
-
-            if (affectedRows > 0)
-            {
-                Console.WriteLine("Successfull deleted region!!!");
-                Console.ReadKey();
-                CountryList();
+                if (affectedRows > 0)
+                {
+                    Console.WriteLine("Successfull deleted country!!!");
+                    Console.ReadKey();
+                    CountryList();
+                }
+                else
+                {
+                    Console.WriteLine("Failed to deleted country!!!");
+                    Console.ReadKey();
+                    CountryList();
+                }
             }
             else
             {
-                Console.WriteLine("Failed to deleted region!!!");
-                Console.ReadKey();
+                Console.WriteLine("country is not found!!!");
+                Console.ReadLine();
                 CountryList();
             }
-
 
         }
     }

@@ -14,6 +14,7 @@
             Console.WriteLine("5. Get all employees");
             Console.WriteLine("6. Get all jobs");
             Console.WriteLine("7. Get all histories");
+            Console.WriteLine("8. Exit");
             Console.WriteLine("******************");
             Console.Write("pilihan : ");
 
@@ -37,6 +38,9 @@
                     break;
                 case 2:
                     CountryView.CountryList();
+                    break;
+                case 8:
+                    Environment.Exit(0);
                     break;
                 default:
                     Console.WriteLine("Invalid choice input!!!");

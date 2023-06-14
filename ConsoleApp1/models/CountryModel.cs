@@ -161,7 +161,7 @@ namespace ConsoleApp1.models
             return result;
         }
 
-        public static int Update(int id, string name)
+        public static int Update(string id, string name, int regionId)
         {
             int result = 0;
             SqlConnection connection = DB.Connection();
@@ -172,12 +172,12 @@ namespace ConsoleApp1.models
             {
                 SqlCommand command = new SqlCommand();
                 command.Connection = connection;
-                command.CommandText = "Update tb_m_regions set name=(@region_name) WHERE id=(@region_id)";
+                command.CommandText = "Update tb_m_countries set name=(@country_name), region_id=(@region_id) WHERE id=(@country_id)";
                 command.Transaction = transaction;
 
                 // membuat parameter
                 SqlParameter pRegionName = new SqlParameter();
-                pRegionName.ParameterName = "@region_name";
+                pRegionName.ParameterName = "@country_name";
                 pRegionName.Value = name;
                 pRegionName.SqlDbType = SqlDbType.VarChar;
 
@@ -187,11 +187,20 @@ namespace ConsoleApp1.models
                 // membuat parameter
                 SqlParameter pRegionId = new SqlParameter();
                 pRegionId.ParameterName = "@region_id";
-                pRegionId.Value = id;
+                pRegionId.Value = regionId;
                 pRegionId.SqlDbType = SqlDbType.Int;
 
                 // menambahkan parameter ke command
                 command.Parameters.Add(pRegionId);
+
+                // membuat parameter
+                SqlParameter pCountryId = new SqlParameter();
+                pCountryId.ParameterName = "@country_id";
+                pCountryId.Value = id;
+                pCountryId.SqlDbType = SqlDbType.VarChar;
+
+                // menambahkan parameter ke command
+                command.Parameters.Add(pCountryId);
 
                 // Menalankan command
                 result = command.ExecuteNonQuery();
@@ -217,7 +226,7 @@ namespace ConsoleApp1.models
             return result;
         }
 
-        public static int Delete(int id)
+        public static int Delete(string id)
         {
             int result = 0;
             SqlConnection connection = DB.Connection();
@@ -228,17 +237,17 @@ namespace ConsoleApp1.models
             {
                 SqlCommand command = new SqlCommand();
                 command.Connection = connection;
-                command.CommandText = "Delete FROM tb_m_regions WHERE id=(@region_id)";
+                command.CommandText = "Delete FROM tb_m_countries WHERE id=(@country_id)";
                 command.Transaction = transaction;
 
                 // membuat parameter
-                SqlParameter pRegionName = new SqlParameter();
-                pRegionName.ParameterName = "@region_id";
-                pRegionName.Value = id;
-                pRegionName.SqlDbType = SqlDbType.Int;
+                SqlParameter pCountryId = new SqlParameter();
+                pCountryId.ParameterName = "@country_id";
+                pCountryId.Value = id;
+                pCountryId.SqlDbType = SqlDbType.VarChar;
 
                 // menambahkan parameter ke command
-                command.Parameters.Add(pRegionName);
+                command.Parameters.Add(pCountryId);
 
                 // Menalankan command
                 result = command.ExecuteNonQuery();

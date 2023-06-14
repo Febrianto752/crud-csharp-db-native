@@ -215,13 +215,13 @@ namespace ConsoleApp1.models
                 command.Transaction = transaction;
 
                 // membuat parameter
-                SqlParameter pRegionName = new SqlParameter();
-                pRegionName.ParameterName = "@region_id";
-                pRegionName.Value = id;
-                pRegionName.SqlDbType = SqlDbType.Int;
+                SqlParameter pRegionId = new SqlParameter();
+                pRegionId.ParameterName = "@region_id";
+                pRegionId.Value = id;
+                pRegionId.SqlDbType = SqlDbType.Int;
 
                 // menambahkan parameter ke command
-                command.Parameters.Add(pRegionName);
+                command.Parameters.Add(pRegionId);
 
                 // Menalankan command
                 result = command.ExecuteNonQuery();
