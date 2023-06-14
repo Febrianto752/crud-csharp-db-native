@@ -1,4 +1,5 @@
 ﻿using ConsoleApp1.database;
+using ConsoleApp1.objects;
 using System.Data;
 using System.Data.SqlClient;
 

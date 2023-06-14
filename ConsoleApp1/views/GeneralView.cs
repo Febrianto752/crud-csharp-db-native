@@ -39,6 +39,9 @@
                 case 2:
                     CountryView.CountryList();
                     break;
+                case 3:
+                    LocationView.LocationList();
+                    break;
                 case 8:
                     Environment.Exit(0);
                     break;

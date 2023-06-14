@@ -1,4 +1,5 @@
 ﻿using ConsoleApp1.models;
+using ConsoleApp1.objects;
 
 namespace ConsoleApp1.views
 {
