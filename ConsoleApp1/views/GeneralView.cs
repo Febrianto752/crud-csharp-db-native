@@ -42,6 +42,9 @@
                 case 3:
                     LocationView.LocationList();
                     break;
+                case 4:
+                    DepartmentView.DepartmentList();
+                    break;
                 case 6:
                     JobView.JobList();
                     break;
