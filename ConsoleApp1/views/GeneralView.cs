@@ -51,6 +51,9 @@
                 case 6:
                     JobView.JobList();
                     break;
+                case 7:
+                    HistoryView.HistoryList();
+                    break;
                 case 8:
                     Environment.Exit(0);
                     break;

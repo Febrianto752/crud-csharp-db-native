@@ -11,7 +11,7 @@ namespace ConsoleApp1.views
             Console.WriteLine("Loading...");
 
             List<Employee> employees = EmployeeModel.FindAllEmployee();
-            //Console.Clear();
+            Console.Clear();
 
             Console.WriteLine("*** Employee List ***\n");
 
